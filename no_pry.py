@@ -1,5 +1,5 @@
 import argparse
-import no_pry_mod
+from no_pry_fshangala import no_pry_mod
 
 parser=argparse.ArgumentParser(
   prog="no_pry",
