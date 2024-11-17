@@ -29,11 +29,14 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
+LicenseFile=C:\Users\fshan\Projects\no_pry\LICENSE
+InfoBeforeFile=C:\Users\fshan\Projects\no_pry\README.md
+InfoAfterFile=C:\Users\fshan\Projects\no_pry\README.md
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 OutputDir=C:\Users\fshan\Projects\no_pry\output
-OutputBaseFilename=no_pry-setup
+OutputBaseFilename=no_pry-v1.1-setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -45,7 +48,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 Source: "C:\Users\fshan\Projects\no_pry\output\no_pry\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\fshan\Projects\no_pry\output\no_pry\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\fshan\Projects\no_pry\output\no_pry\_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
