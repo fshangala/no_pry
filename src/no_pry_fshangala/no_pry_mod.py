@@ -1,11 +1,12 @@
 import base64
 import argparse
+import pandas
 
 class Credentials:
   def __init__(self,server:str,username:str,password:str):
-    self.server=server
-    self.username=username
-    self.password=password
+    self.server=str(server)
+    self.username=str(username)
+    self.password=str(password)
   
   def __str__(self):
     return f"{self.username}@{self.server}?password={self.password}"
@@ -18,7 +19,7 @@ class B64:
     token=f"b64.{enc_server}.{enc_username}.{enc_password}"
     return token
   
-  def decrypt(tokens:list)->Credentials:
+  def decrypt(self,tokens:list)->Credentials:
     if len(tokens) == 4:
       server=base64.b64decode(tokens[1]).decode()
       username=base64.b64decode(tokens[2]).decode()
@@ -43,6 +44,38 @@ def encrypt(credentials:Credentials,ttype:str="b64")->str:
     return crypt.encrypt(credentials=credentials)
   else:
     raise Exception("Invalid token type")
+
+def encryptFile(path):
+  df = pandas.read_csv(path)
+  data = {
+    "server":[],
+    "code":[]
+  }
+  for i in df.index:
+    code = encrypt(Credentials(server=df.loc[i,"server"],username=df.loc[i,"username"],password=df.loc[i,"password"]),ttype="b64")
+    data["server"].append(df.loc[i,"server"])
+    data["code"].append(code)
+  dfout = pandas.DataFrame.from_dict(data=data)
+  dfout.to_csv("encrypted.csv",index=False)
+  print(dfout)
+
+def decryptFile(path):
+  df = pandas.read_csv(path)
+  data={
+    "server":[],
+    "username":[],
+    "password":[],
+    "type":[],
+  }
+  for i in df.index:
+    credentials=decrypt(df.loc[i,"code"])
+    data["server"].append(credentials.server)
+    data["username"].append(credentials.username)
+    data["password"].append(credentials.password)
+    data["type"].append("b64")
+  dfout = pandas.DataFrame.from_dict(data=data)
+  dfout.to_csv("decrypted.csv",index=False)
+  print(dfout)
 
 def b64(args:argparse.Namespace)->str:
   server=base64.b64encode(args.server.encode()).decode()
